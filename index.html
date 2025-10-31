@@ -18,6 +18,7 @@
     justify-content: center;
     align-items: center;
     transition: background 2s ease;
+    box-sizing: border-box;
   }
 
   .overlay {
@@ -29,7 +30,9 @@
     box-shadow: 0 0 25px rgba(0,0,0,0.15);
     padding: 40px 60px;
     transition: all 0.5s ease;
-    max-width: 90%;
+    width: 90%;
+    max-width: 600px;
+    margin: 20px; /* jarak aman dari tepi layar */
   }
 
   .greeting {
@@ -90,28 +93,23 @@
     filter: brightness(1.15);
   }
 
-  /* RESPONSIVE: Untuk HP / Tablet */
+  /* RESPONSIVE: HP / TABLET */
   @media (max-width: 768px) {
+    body {
+      padding: 15px; /* ruang tambahan dari tepi layar */
+    }
+
     .overlay {
       padding: 25px 20px;
       border-radius: 20px;
+      width: 100%;
+      margin: 0 10px; /* biar gak mentok kiri-kanan */
     }
 
-    .greeting {
-      font-size: 1.6em;
-    }
-
-    .time {
-      font-size: 2.2em;
-    }
-
-    .date {
-      font-size: 0.95em;
-    }
-
-    .button-container {
-      gap: 10px;
-    }
+    .greeting { font-size: 1.6em; }
+    .time { font-size: 2.2em; }
+    .date { font-size: 0.95em; }
+    .button-container { gap: 10px; }
 
     .button-container a {
       font-size: 0.85em;
@@ -120,20 +118,15 @@
     }
   }
 
-  /* Untuk layar sangat besar (desktop lebar) */
+  /* Layar sangat besar */
   @media (min-width: 1400px) {
     .overlay {
       padding: 60px 100px;
+      max-width: 800px;
     }
-    .greeting {
-      font-size: 3em;
-    }
-    .time {
-      font-size: 4em;
-    }
-    .date {
-      font-size: 1.3em;
-    }
+    .greeting { font-size: 3em; }
+    .time { font-size: 4em; }
+    .date { font-size: 1.3em; }
   }
 </style>
 </head>
@@ -144,30 +137,25 @@
   <div class="date" id="date">Memuat tanggal...</div>
 
   <div class="button-container" id="buttons">
-    <a class="btn" href="https://www.google.com" target="_blank"><i class="fa-solid fa-mug-hot"></i> Mulai Hari</a>
-    <a class="btn" href="https://www.youtube.com" target="_blank"><i class="fa-solid fa-music"></i> Hiburan</a>
-    <a class="btn" href="https://www.wikipedia.org" target="_blank"><i class="fa-solid fa-book-open"></i> Belajar</a>
-    <a class="btn" href="https://chat.openai.com" target="_blank"><i class="fa-solid fa-comments"></i> Ngobrol AI</a>
+    <a class="btn" href="https://www.whatsapp.com" target="_blank"><i class="fa-brands fa-whatsapp"></i> Whatsapp</a>
+    <a class="btn" href="https://www.facebook.com" target="_blank"><i class="fa-brands fa-facebook"></i> Facebook</a>
+    <a class="btn" href="https://www.instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i> Instagram</a>
+    <a class="btn" href="https://www.github.com" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
   </div>
 </div>
 
 <script>
 function getGreetingText() {
-  const now = new Date();
-  const hours = now.getHours();
-  let greet = "";
-
-  if (hours >= 5 && hours < 12) {
-    greet = "Halo, Selamat Pagi!";
-  } else if (hours >= 12 && hours < 17) {
-    greet = "Halo, Selamat Siang!";
-  } else if (hours >= 17 && hours < 19) {
-    greet = "Halo, Selamat Sore!";
+  const hours = new Date().getHours();
+  if (hours >= 4 && hours < 11) {
+    return "Halo, Selamat Pagi!";
+  } else if (hours >= 11 && hours < 15) {
+    return "Halo, Selamat Siang!";
+  } else if (hours >= 15 && hours < 18) {
+    return "Halo, Selamat Sore!";
   } else {
-    greet = "Halo, Selamat Malam!";
+    return "Halo, Selamat Malam!";
   }
-
-  return greet;
 }
 
 function applyTheme() {
@@ -176,33 +164,28 @@ function applyTheme() {
   const clock = document.getElementById('clock');
   const dateEl = document.getElementById('date');
   const buttons = document.querySelectorAll('.btn');
-  const now = new Date();
-  const hours = now.getHours();
+  const hours = new Date().getHours();
   let btnColor = '';
 
-  if (hours >= 5 && hours < 12) {
-    // Pagi
+  if (hours >= 4 && hours < 11) {
     body.style.background = "linear-gradient(to top right, #FFEFBA, #FFFFFF)";
     greeting.style.color = "#4a3b18";
     clock.style.color = "#3c2a1e";
     dateEl.style.color = "#5e4d3b";
     btnColor = 'linear-gradient(90deg, #FFB75E, #ED8F03)';
-  } else if (hours >= 12 && hours < 17) {
-    // Siang
+  } else if (hours >= 11 && hours < 15) {
     body.style.background = "linear-gradient(to top right, #36D1DC, #5B86E5)";
     greeting.style.color = "#154360";
     clock.style.color = "#1B2631";
     dateEl.style.color = "#283747";
     btnColor = 'linear-gradient(90deg, #36D1DC, #5B86E5)';
-  } else if (hours >= 17 && hours < 19) {
-    // Sore
+  } else if (hours >= 15 && hours < 18) {
     body.style.background = "linear-gradient(to top right, #f7971e, #ffd200)";
     greeting.style.color = "#6e2c00";
     clock.style.color = "#4a2511";
     dateEl.style.color = "#5d4037";
     btnColor = 'linear-gradient(90deg, #f7971e, #ffd200)';
   } else {
-    // Malam
     body.style.background = "linear-gradient(to top right, #141E30, #243B55)";
     greeting.style.color = "#e0e6ff";
     clock.style.color = "#cdd4ff";
@@ -217,7 +200,6 @@ function typeWriterEffect(text) {
   const greeting = document.getElementById('greeting');
   greeting.textContent = "";
   let i = 0;
-
   function type() {
     if (i < text.length) {
       greeting.textContent += text.charAt(i);
@@ -243,13 +225,11 @@ function updateTime() {
   dateEl.textContent = `${hari}, ${tanggal}`;
 }
 
-// Jalankan saat halaman dimuat
 const greetText = getGreetingText();
 typeWriterEffect(greetText);
 applyTheme();
 updateTime();
 
-// Update setiap detik dan ubah tema setiap menit
 setInterval(updateTime, 1000);
 setInterval(applyTheme, 60000);
 </script>
