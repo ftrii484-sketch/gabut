@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tampilan Dinamis dengan Ucapan & Timer</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    transition: background 2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .overlay {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 35px 50px;
+    border-radius: 25px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 25px rgba(0,0,0,0.15);
+  }
+
+  .greeting {
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 15px;
+    border-right: 3px solid rgba(255,255,255,0.75);
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    animation: blinkCursor 0.8s step-end infinite;
+  }
+
+  @keyframes blinkCursor {
+    50% { border-color: transparent; }
+  }
+
+  .time {
+    font-size: 3em;
+    font-weight: 700;
+    letter-spacing: 2px;
+    transition: color 1s ease;
+  }
+
+  .date {
+    font-size: 1.1em;
+    margin-top: 8px;
+    opacity: 0.9;
+    transition: color 1s ease;
+  }
+
+  .button-container {
+    margin-top: 25px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .button-container a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    font-size: 0.95em;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .button-container a:hover {
+    transform: scale(1.05);
+    filter: brightness(1.15);
+  }
+</style>
+</head>
+<body>
+<div class="overlay">
+  <div class="greeting" id="greeting"></div>
+  <div class="time" id="clock">--:--:--</div>
+  <div class="date" id="date">Memuat tanggal...</div>
+
+  <div class="button-container" id="buttons">
+    <a class="btn" href="https://www.google.com" target="_blank"><i class="fa-solid fa-mug-hot"></i> Mulai Hari</a>
+    <a class="btn" href="https://www.youtube.com" target="_blank"><i class="fa-solid fa-music"></i> Hiburan</a>
+    <a class="btn" href="https://www.wikipedia.org" target="_blank"><i class="fa-solid fa-book-open"></i> Belajar</a>
+    <a class="btn" href="https://chat.openai.com" target="_blank"><i class="fa-solid fa-comments"></i> Ngobrol AI</a>
+  </div>
+</div>
+
+<script>
+function getGreetingText() {
+  const now = new Date();
+  const hours = now.getHours();
+  let greet = "";
+
+  if (hours >= 5 && hours < 12) {
+    greet = "Halo, Selamat Pagi!";
+  } else if (hours >= 12 && hours < 17) {
+    greet = "Halo, Selamat Siang!";
+  } else if (hours >= 17 && hours < 19) {
+    greet = "Halo, Selamat Sore!";
+  } else {
+    greet = "Halo, Selamat Malam!";
+  }
+
+  return greet;
+}
+
+function applyTheme() {
+  const body = document.body;
+  const greeting = document.getElementById('greeting');
+  const clock = document.getElementById('clock');
+  const dateEl = document.getElementById('date');
+  const buttons = document.querySelectorAll('.btn');
+  const now = new Date();
+  const hours = now.getHours();
+  let btnColor = '';
+
+  if (hours >= 5 && hours < 12) {
+    // Pagi
+    body.style.background = "linear-gradient(to top right, #FFEFBA, #FFFFFF)";
+    greeting.style.color = "#4a3b18";
+    clock.style.color = "#3c2a1e";
+    dateEl.style.color = "#5e4d3b";
+    btnColor = 'linear-gradient(90deg, #FFB75E, #ED8F03)';
+  } else if (hours >= 12 && hours < 17) {
+    // Siang
+    body.style.background = "linear-gradient(to top right, #36D1DC, #5B86E5)";
+    greeting.style.color = "#154360";
+    clock.style.color = "#1B2631";
+    dateEl.style.color = "#283747";
+    btnColor = 'linear-gradient(90deg, #36D1DC, #5B86E5)';
+  } else if (hours >= 17 && hours < 19) {
+    // Sore
+    body.style.background = "linear-gradient(to top right, #f7971e, #ffd200)";
+    greeting.style.color = "#6e2c00";
+    clock.style.color = "#4a2511";
+    dateEl.style.color = "#5d4037";
+    btnColor = 'linear-gradient(90deg, #f7971e, #ffd200)';
+  } else {
+    // Malam
+    body.style.background = "linear-gradient(to top right, #141E30, #243B55)";
+    greeting.style.color = "#e0e6ff";
+    clock.style.color = "#cdd4ff";
+    dateEl.style.color = "#aab3ff";
+    btnColor = 'linear-gradient(90deg, #0f2027, #203a43, #2c5364)';
+  }
+
+  buttons.forEach(btn => btn.style.background = btnColor);
+}
+
+function typeWriterEffect(text) {
+  const greeting = document.getElementById('greeting');
+  greeting.textContent = "";
+  let i = 0;
+
+  function type() {
+    if (i < text.length) {
+      greeting.textContent += text.charAt(i);
+      i++;
+      setTimeout(type, 80);
+    }
+  }
+  type();
+}
+
+function updateTime() {
+  const clock = document.getElementById('clock');
+  const dateEl = document.getElementById('date');
+  const now = new Date();
+
+  const jam = now.getHours().toString().padStart(2, '0');
+  const menit = now.getMinutes().toString().padStart(2, '0');
+  const detik = now.getSeconds().toString().padStart(2, '0');
+  clock.textContent = `${jam}:${menit}:${detik}`;
+
+  const hari = now.toLocaleDateString('id-ID', { weekday: 'long' });
+  const tanggal = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+  dateEl.textContent = `${hari}, ${tanggal}`;
+}
+
+// Jalankan saat halaman dimuat
+const greetText = getGreetingText();
+typeWriterEffect(greetText);
+applyTheme();
+updateTime();
+
+// Update setiap menit agar background ikut berubah
+setInterval(updateTime, 1000);
+setInterval(applyTheme, 60000);
+</script>
+</body>
+</html>
