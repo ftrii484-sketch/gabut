@@ -3,37 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tampilan Dinamis dengan Ucapan & Timer</title>
+<title>Tampilan Dinamis Responsif</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-  body, html {
+  html, body {
     margin: 0;
     padding: 0;
     height: 100%;
     font-family: 'Poppins', sans-serif;
-    transition: background 2s ease;
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: background 2s ease;
   }
 
   .overlay {
     text-align: center;
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 35px 50px;
     border-radius: 25px;
     backdrop-filter: blur(10px);
     box-shadow: 0 0 25px rgba(0,0,0,0.15);
+    padding: 40px 60px;
+    transition: all 0.5s ease;
+    max-width: 90%;
   }
 
   .greeting {
-    font-size: 2em;
+    font-size: 2.5em;
     font-weight: 600;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     border-right: 3px solid rgba(255,255,255,0.75);
     white-space: nowrap;
     overflow: hidden;
@@ -46,15 +48,15 @@
   }
 
   .time {
-    font-size: 3em;
+    font-size: 3.5em;
     font-weight: 700;
     letter-spacing: 2px;
     transition: color 1s ease;
   }
 
   .date {
-    font-size: 1.1em;
-    margin-top: 8px;
+    font-size: 1.2em;
+    margin-top: 10px;
     opacity: 0.9;
     transition: color 1s ease;
   }
@@ -70,20 +72,68 @@
   .button-container a {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     text-decoration: none;
     color: white;
-    padding: 10px 20px;
+    padding: 12px 22px;
     border-radius: 25px;
     border: 1px solid rgba(255, 255, 255, 0.25);
-    font-size: 0.95em;
+    font-size: 1em;
     font-weight: 500;
     transition: all 0.3s ease;
+    min-width: 150px;
   }
 
   .button-container a:hover {
     transform: scale(1.05);
     filter: brightness(1.15);
+  }
+
+  /* RESPONSIVE: Untuk HP / Tablet */
+  @media (max-width: 768px) {
+    .overlay {
+      padding: 25px 20px;
+      border-radius: 20px;
+    }
+
+    .greeting {
+      font-size: 1.6em;
+    }
+
+    .time {
+      font-size: 2.2em;
+    }
+
+    .date {
+      font-size: 0.95em;
+    }
+
+    .button-container {
+      gap: 10px;
+    }
+
+    .button-container a {
+      font-size: 0.85em;
+      padding: 10px 15px;
+      min-width: 120px;
+    }
+  }
+
+  /* Untuk layar sangat besar (desktop lebar) */
+  @media (min-width: 1400px) {
+    .overlay {
+      padding: 60px 100px;
+    }
+    .greeting {
+      font-size: 3em;
+    }
+    .time {
+      font-size: 4em;
+    }
+    .date {
+      font-size: 1.3em;
+    }
   }
 </style>
 </head>
@@ -199,7 +249,7 @@ typeWriterEffect(greetText);
 applyTheme();
 updateTime();
 
-// Update setiap menit agar background ikut berubah
+// Update setiap detik dan ubah tema setiap menit
 setInterval(updateTime, 1000);
 setInterval(applyTheme, 60000);
 </script>
